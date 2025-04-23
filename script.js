@@ -13,11 +13,27 @@ function createGrid(gridSize) {
             cell.style.width = cellSize + 'px';
             cell.style.height = cellSize + 'px';
             cell.addEventListener('mouseover', function () {
+                // Generar un color aleatorio
                 const R = Math.floor(Math.random() * 256);
                 const G = Math.floor(Math.random() * 256);
                 const B = Math.floor(Math.random() * 256);
-                cell.style.backgroundColor = `rgb(${R}, ${G}, ${B})`;
-            });
+
+                // Cambiar el color de fondo de la celda, manteniendo el color original
+                if (!cell.dataset.originalColor) {
+                    cell.dataset.originalColor = `rgb(${R}, ${G}, ${B})`;
+                }
+                cell.style.backgroundColor = cell.dataset.originalColor;
+
+                // Aumentar la opacidad de la celda por cada interacción
+                if (!cell.style.opacity) {
+                    cell.style.opacity = 0.1;
+                } else {
+                    let currentOpacity = parseFloat(cell.style.opacity);
+                    if (currentOpacity < 1) {
+                        cell.style.opacity = currentOpacity + 0.1;
+                    }
+                }
+            });            
             row.appendChild(cell);
         }
         container.appendChild(row);
